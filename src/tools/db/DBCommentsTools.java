@@ -6,15 +6,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoException;
 
 public class DBCommentsTools {
 	
@@ -58,7 +61,7 @@ public class DBCommentsTools {
 		
 		BasicDBObject searchItem = new BasicDBObject();
 		searchItem.put("login", login);
-		
+
 		DBCursor cursor = comments.find(searchItem);
 		
 		return cursor;
@@ -94,6 +97,53 @@ public class DBCommentsTools {
 		updateItem.put("$set", "{likes:" + like +"}");
 		
 		comments.update(searchItem, updateItem, true, false);
+	}
+	/**
+	 * Renvoie tous les comment des friends de l'utilisateur dans un objet JSON.
+	 * @param key
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws SQLException
+	 * @throws JSONException 
+	 * @throws MongoException 
+	 */
+	public static ArrayList<DBCursor> showFriendsComments (String key) throws InstantiationException, IllegalAccessException, SQLException, MongoException, JSONException {
+		//JSONObject o = new JSONObject();
+		BasicDBObject o = new BasicDBObject ();
+		JSONArray a = new JSONArray();
+		ArrayList <DBCursor> array = new ArrayList<DBCursor> ();
+		
+		DB dbs = Database.getMongoDB();
+		DBCollection comments = Database.getMongoCollection("comments");
+		BasicDBObject searchItem = new BasicDBObject();
+		
+		Connection c = Database.getMySQLConnection();
+		Statement s = c.createStatement();
+		String ulogin = DBCommentsTools.LoginFromKey(key);
+		String q = "select * from friendships where ulogin = '" + ulogin + "'" ;
+		s.executeQuery(q);
+		ResultSet rs = s.getResultSet();
+		
+		while (rs.next()) {
+			String login = rs.getString("flogin");
+			searchItem.put("login", login);
+			DBCursor cursor = comments.find(searchItem);
+			//int i = 0;
+			array.add(cursor);
+			
+			
+			/*while (cursor.hasNext()) {
+				i++;
+				o.put(i, cursor.)
+				//o.put(""+i, cursor.next());
+			}*/
+		}
+		rs.close();
+		s.close();
+		c.close();
+		
+		return array;		
 	}
 	
 	private static String LoginFromKey(String key) throws SQLException {

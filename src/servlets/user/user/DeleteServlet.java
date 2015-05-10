@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 
+import services.user.SessionServices;
 import services.user.UserServices;
+import tools.db.DBSessionTools;
+import tools.json.JSONErrorTools;
 
 public class DeleteServlet extends HttpServlet{
 	
@@ -31,8 +34,23 @@ public class DeleteServlet extends HttpServlet{
 		out.print("<html><head><title>DeleteUserServlet</title></head><body>");
 		if (pars.containsKey("key")) {
 			String key = req.getParameter("key");
+			boolean verified = true;
 			try {
-				out.print(UserServices.delete(key));
+				if (key == null) {
+					out.print(JSONErrorTools.JSONError("Invalid key", 1));
+					verified = false;
+				}
+				if (!DBSessionTools.isConnectedWithKey(key)) {
+					out.print(JSONErrorTools.JSONError("User not connected", 2));
+					verified = false;
+				}
+				if (SessionServices.isTimeOut(key)) {
+					DBSessionTools.deleteSession(key);
+					out.print(JSONErrorTools.JSONError("Connection Time Out", 3));
+					verified = false;
+				}
+				if (verified)
+					out.print(UserServices.delete(key));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				out.print(e.getMessage());

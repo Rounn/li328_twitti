@@ -25,17 +25,8 @@ public class SessionServices {
 	 */
 	public static JSONObject disconnect(String key) throws JSONException, SQLException {
 		JSONObject o = new JSONObject();		
-		if (key == null) 
-			return JSONErrorTools.JSONError("Invalid login.", 1);
-		if (!DBSessionTools.isConnectedWithKey(key))
-			return JSONErrorTools.JSONError("User is not connected or does not exist.", 2);
-		
-		if (SessionServices.isTimeOut(key)) {
-			DBSessionTools.deleteSession(key);
-			return JSONErrorTools.JSONError("User already disconnected.", 2);
-		}
-		
 		DBSessionTools.deleteSession(key);
+		
 		o.put("key", key);
 		return o;
 	}

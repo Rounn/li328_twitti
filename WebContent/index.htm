@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Twitti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+</head>
+
+<body >
+<div class="top-header">
+	<img class="logo" alt="logo" src="img/twitti.jpg">
+	<a href="#" id="user">Rani Husseini</a>
+	<div id="dialog" title="Personal Info" style="display:none;">
+		<div id="personal-data">
+			<p>walid kamal jomblat</p>
+			<p>walid@14azar.com.lb</p>
+		</div>
+		<button>Log Out</button>
+	</div>
+</div>
+<div class="main-content">
+	<div id="tabs">
+			<ul>
+			<li id="tab-link-1"><a href="#tabs-1">TWIITS</a></li>
+			<li id="tab-link-2"><a href="#tabs-2">FRIENDS</a></li>
+			<li id="tab-link-3"><a href="#tabs-3">PROFILE</a></li>
+			<form>
+				<input type="search" placeholder="Search" class="search-form">
+				<input type="submit" value="🔎" class="search-form"/>
+			</form>
+		</ul>
+		<div id="tabs-1">
+			<div id="twiits-data" class="data-results">
+				<br><br><br>
+			</div>
+		</div>
+		<div id="tabs-2">
+			<div id="friends-data" class="data-results">
+				<br><br><br>
+			</div>
+		</div>
+		<div id="tabs-3">
+			<form>
+				<input type="text" placeholder="What's on your mind?" class="share-form" style="width:50%;"/>
+				<input type="submit" value="Share" class="share-form"/>
+			</form>
+			<div id="profile-data" class="data-results">
+				<br><br><br>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+
+
+</html>
+
+
+<style>
+body {
+	background:#55acee;
+	margin:0;
+}
+
+.top-header {
+	background:white;
+	position:fixed;
+	top:0px;
+	min-width:100%;
+	height:100px;
+	z-index:1;
+}
+
+.logo {
+	height:inherit;
+	margin-left: auto;
+    margin-right: auto;
+	display:block;
+}
+
+#user {
+	position: fixed;
+	top: 15px;
+	right: 40px;
+	color: #55acee;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.user:hover {
+	text-decoration: underline;
+}
+  
+.main-content{
+	/*border-radius:15px;*/
+	margin-top:120px;
+	margin-left:10%;
+	margin-right:10%;
+	background:#c0deed;
+	/*padding: 5% 10% 5% 10%;*/
+	border: 3px solid #D8E9F2;
+	height:auto;
+}
+
+.search-form{
+	float:right;
+}
+
+.share-form {
+	height: 40px;
+}
+
+
+/*Overriding jQuery UI*/
+.ui-tabs .ui-tabs-panel {
+  background: #c0deed;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+  background: #c0deed;
+}
+</style>
+
+
+
+<script>
+$(document).ready(function() {
+
+	$(function(){
+		$('.top-header').data('size','big');
+	});
+	
+	$(window).scroll(function(){
+		if($(document).scrollTop() > 0)
+		{
+			if($('.top-header').data('size') == 'big')
+			{
+				$('.top-header').data('size','small');
+				$('.top-header').stop().animate({
+					height:'50px'
+				},600);
+				$('.logo').attr("src", "img/twitti-text.png");
+			}
+		}
+		else
+		{
+			if($('.top-header').data('size') == 'small')
+			{
+				$('.top-header').data('size','big');
+				$('.top-header').stop().animate({
+					height:'100px'
+				},600);
+				$('.logo').attr("src", "img/twitti.jpg");
+			}  
+		}
+	});	
+
+	$( "#user" ).click(function() {
+		var personalinfoUrl = 'http://api.openweathermap.org/data/2.5/weather?q=London,uk';
+		$('#personal-data').load(personalinfoUrl);
+		$( "#dialog" ).dialog({modal: true});
+	});
+
+	$(function() {
+		$( "#tabs" ).tabs();
+	});
+	
+	var twiitsUrl = 'http://132.227.201.129:8280/li328_twitti/showFriendsComments?key=d2eab6e43756e7b21b1c3a8b2647f377';
+	$('#tabs-1').load(twiitsUrl);
+	$('#tab-link-1').click(function() {
+		$('#twiits-data').load(twiits-url);
+	});
+	$('#tab-link-2').click(function() {
+		var friendsUrl = 'http://132.227.201.129:8280/li328_twitti/showFriends?key=d2eab6e43756e7b21b1c3a8b2647f377';
+		$('#friends-data').load(friendsUrl);
+	});
+	$('#tab-link-3').click(function() {
+		var profileUrl = 'http://api.openweathermap.org/data/2.5/weather?q=London,uk';
+		$('#profile-data').load(profileUrl);
+	});
+});
+</script>

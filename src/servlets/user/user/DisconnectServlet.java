@@ -13,6 +13,8 @@ import org.json.JSONException;
 
 import services.user.SessionServices;
 import services.user.UserServices;
+import tools.db.DBSessionTools;
+import tools.json.JSONErrorTools;
 
 public class DisconnectServlet extends HttpServlet{
 	/**
@@ -31,8 +33,23 @@ public class DisconnectServlet extends HttpServlet{
 		out.print("<html><head><title>DisconnectUserServlet</title></head><body>");
 		if (pars.containsKey("key")) {
 			String key = req.getParameter("key");
+			boolean verified = true;
 			try {
-				out.print(SessionServices.disconnect(key));
+				if (key == null) { 
+					out.print(JSONErrorTools.JSONError("Invalid login.", 1));
+					verified = false;
+				}
+				if (!DBSessionTools.isConnectedWithKey(key)) {
+					out.print(JSONErrorTools.JSONError("User is not connected or does not exist.", 2));
+					verified = false;
+				}
+				if (SessionServices.isTimeOut(key)) {
+					DBSessionTools.deleteSession(key);
+					out.print(JSONErrorTools.JSONError("User already disconnected.", 2));
+					verified = false;
+				}
+				if (verified)
+					out.print(SessionServices.disconnect(key));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				out.print(e.getMessage());

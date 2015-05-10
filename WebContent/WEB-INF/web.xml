@@ -6,8 +6,7 @@
 		
   <display-name> TWITTI </display-name>
   
-  
-  
+  <!-- User Specific Servlets -->
   <servlet>
     <servlet-name>CreateUserServlet</servlet-name>
     <servlet-class>servlets.user.user.CreateServlet</servlet-class>
@@ -62,4 +61,112 @@
     <url-pattern>/removeFriend</url-pattern>
   </servlet-mapping>  
   
+  <servlet>
+    <servlet-name>ShowFriendsServlet</servlet-name>
+    <servlet-class>servlets.user.friends.ShowFriendsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowFriendsServlet</servlet-name>
+    <url-pattern>/showFriends</url-pattern>
+  </servlet-mapping>  
+    
+   <servlet>
+    <servlet-name>AddCommentServlet</servlet-name>
+    <servlet-class>servlets.user.comments.AddCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddCommentServlet</servlet-name>
+    <url-pattern>/addComment</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>SearchCommentServlet</servlet-name>
+    <servlet-class>servlets.user.comments.SearchCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchCommentServlet</servlet-name>
+    <url-pattern>/searchComment</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+    <servlet-name>ShowFriendsCommentsServlet</servlet-name>
+    <servlet-class>servlets.user.comments.ShowFriendsCommentsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowFriendsCommentsServlet</servlet-name>
+    <url-pattern>/showFriendsComments</url-pattern>
+  </servlet-mapping>  
+      
+   <!-- Admin Specific Servlets -->
+  <servlet>
+    <servlet-name>CreateCollectionServlet</servlet-name>
+    <servlet-class>servlets.admin.mongodb.CreateCollectionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateCollectionServlet</servlet-name>
+    <url-pattern>/createColl</url-pattern>
+  </servlet-mapping>    
+
+  <servlet>
+    <servlet-name>ShowAllCollectionsServlet</servlet-name>
+    <servlet-class>servlets.admin.mongodb.ShowAllCollectionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowAllCollectionsServlet</servlet-name>
+    <url-pattern>/showAllColl</url-pattern>
+  </servlet-mapping>
+   
+  <servlet>
+    <servlet-name>ShowAllCommentsServlet</servlet-name>
+    <servlet-class>servlets.admin.mongodb.ShowAllCommentsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ShowAllCommentsServlet</servlet-name>
+    <url-pattern>/showAllComments</url-pattern>
+  </servlet-mapping>   
+  
+    <servlet>
+    <servlet-name>TestDBServlet</servlet-name>
+    <servlet-class>servlets.admin.mongodb.TestConnection</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TestDBServlet</servlet-name>
+    <url-pattern>/testmongo</url-pattern>
+  </servlet-mapping>  
+   
+  <servlet>
+    <servlet-name>SearchCommentServlet</servlet-name>
+    <servlet-class>servlets.user.comments.SearchCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchCommentServlet</servlet-name>
+    <url-pattern>/searchUserComments</url-pattern>
+  </servlet-mapping>  
+  
+<servlet>
+    <servlet-name>LikeCommentServlet</servlet-name>
+    <servlet-class>servlets.user.comments.LikeCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LikeCommentServlet</servlet-name>
+    <url-pattern>/likeComment</url-pattern>
+  </servlet-mapping>    
+  
+<servlet>
+    <servlet-name>ComputeRSVWordServlet</servlet-name>
+    <servlet-class>servlets.admin.mongodb.ComputeWordsRSVServlet </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ComputeRSVWordServlet</servlet-name>
+    <url-pattern>/wordRSV</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>SearchEngineWordServlet</servlet-name>
+    <servlet-class>servlets.user.comments.SearchEngineWordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchEngineWordServlet</servlet-name>
+    <url-pattern>/searchEngineComment</url-pattern>
+  </servlet-mapping>    
 </web-app>

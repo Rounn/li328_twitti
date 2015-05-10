@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DBFriendsTools {
 	
 	public static void addFriendship (String ukey, String flogin) throws SQLException {
@@ -25,6 +28,23 @@ public class DBFriendsTools {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static JSONObject showFriends (String key) throws SQLException, InstantiationException, IllegalAccessException, JSONException {
+		JSONObject o = new JSONObject();
+		String ulogin = DBFriendsTools.LoginFromKey(key);
+		Connection c = Database.getMySQLConnection();
+		Statement s = c.createStatement();
+		String q = "select * from friendships where ulogin = '" + ulogin + "';";
+		s.executeQuery(q);
+		
+		ResultSet rs = s.getResultSet();
+		int i = 0;
+		while (rs.next()) {
+			i++;
+			o.put(""+i, rs.getString("flogin"));
+		}
+		return o;
 	}
 	
 	public static boolean onSelfOperation (String ukey, String flogin) throws SQLException {

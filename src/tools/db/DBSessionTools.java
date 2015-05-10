@@ -78,7 +78,7 @@ public class DBSessionTools {
 		try {
 			Connection c = Database.getMySQLConnection();
 			Statement s = c.createStatement();
-			String q = "select * from sessions s where s.clef = '" + key + "';";
+			String q = "select * from sessions where clef = '" + key + "';";
 			s.executeQuery(q);
 			ResultSet rs = s.getResultSet();
 			boolean bool = rs.next();
@@ -126,7 +126,7 @@ public class DBSessionTools {
 		try {
 			Connection c = Database.getMySQLConnection();
 			Statement s = c.createStatement();
-			String q = "select sessiontimestamp from sessions s where s.clef = '" + key + "';";
+			String q = "select * from sessions where clef = '" + key + "';";
 			s.executeQuery(q);
 			ResultSet rs = s.getResultSet();
 			rs.next();
@@ -154,8 +154,8 @@ public class DBSessionTools {
 			Statement s = c.createStatement();
 			Date date = new Date();
 			long timestamp = date.getTime();
-			String q = "update sessions set sessiontimestamp = " + timestamp + "where s.clef = '" + key + "';";
-			s.executeQuery(q);
+			String q = "update sessions set sessiontimestamp = " + timestamp + " where clef = '" + key + "';";
+			s.executeUpdate(q);
 			
 			s.close();
 			c.close();

@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 
 import services.user.FriendsServices;
+import services.user.SessionServices;
+import tools.db.DBFriendsTools;
+import tools.db.DBSessionTools;
+import tools.db.DBUserTools;
+import tools.json.JSONErrorTools;
 
 public class RemoveFriendServlet extends HttpServlet{
 	/**
@@ -27,8 +32,39 @@ public class RemoveFriendServlet extends HttpServlet{
 		if (pars.containsKey("ukey") && pars.containsKey("flogin")) {
 			String ukey = req.getParameter("ukey");
 			String flogin = req.getParameter("flogin");
+			boolean verified = true;
 			try {
-				out.print(FriendsServices.removeFriend(ukey, flogin));
+				if (ukey == null) {
+					out.print(JSONErrorTools.JSONError("Invalid user login.", 1));
+					verified = false;
+				}
+				if (flogin == null) { 
+					out.print(JSONErrorTools.JSONError("Invalid friend login", 4));
+					verified = false;
+				}
+				if (!DBSessionTools.isConnectedWithKey(ukey)) {
+					out.print(JSONErrorTools.JSONError("User does not exist.", 2));
+					verified = false;
+				}
+				if (!DBUserTools.UserExists(flogin)) {
+					out.print(JSONErrorTools.JSONError("Friend User do not exist.", 5));
+					verified = false;
+				}
+				if (SessionServices.isTimeOut(ukey)) {
+					DBSessionTools.deleteSession(ukey);
+					out.print(JSONErrorTools.JSONError("Connection Time Out", 3));
+					verified = false;
+				}
+				if (DBFriendsTools.onSelfOperation(ukey, flogin)) {
+					out.print(JSONErrorTools.JSONError("Cannot remove itself", 6));
+					verified = false;
+				}
+				if (!DBFriendsTools.friendshipExists(ukey, flogin)) {
+					out.print(JSONErrorTools.JSONError("Friendship does not exist", 6));
+					verified = false;
+				}
+				if (verified)
+					out.print(FriendsServices.removeFriend(ukey, flogin));
 			} catch (JSONException e) {
 				e.printStackTrace();
 				out.print(e.getMessage());
