@@ -22,7 +22,7 @@ public class Database {
 	private DataSource mysql_ds;
 	private static DB mongo_db;
 	private static String username = "gr3_husseini";
-	private static String password = "gr3_husseini$";
+	private static String password = "/*...*/";
 	private static String mysql_dBname = "gr3_husseini";
 	private static String mongo_dBname = "gr3_husseini";
 	
